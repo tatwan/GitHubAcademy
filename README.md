@@ -13,8 +13,10 @@
 | Folder | Contents |
 |---|---|
 | `slides/` | Presentation deck used during the training |
+| `readings/` | Learner handout and after-class reference material |
 | `labs/` | Hands-on labs students follow during the session |
 | `solutions/` | Answer keys for challenge sections (shared after each lab) |
+| `assessments/` | Short knowledge check for end-of-session review |
 | `instructor/` | Instructor demo scripts and run-of-show notes |
 
 ---
@@ -53,3 +55,9 @@
 - 🧠 **Why this matters** — how this connects to real engineering work.
 - ✅ **Checkpoints** — verify you're on track before moving on.
 - 🏆 **Challenge** — do-it-yourself section with hints. Solutions are shared afterward in `solutions/`.
+
+## Recommended class flow additions
+
+- Share `readings/git-github-fundamentals-handout.md` at the end of class as the learner reference.
+- Use `assessments/git-github-fundamentals-knowledge-check.md` during wrap-up or as a 10-minute post-class check.
+- Keep `instructor/demo-scripts.md` open while presenting; it contains the live demo narrative, expected outputs, reset steps, and troubleshooting notes.
