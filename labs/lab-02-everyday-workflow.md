@@ -59,6 +59,18 @@ EOF
 git add greet.py
 git commit -m "Add greeting script"
 ```
+> __Note__
+> `cat > greet.py << 'EOF'` is a very common and powerful Bash pattern for creating files with multi-line content. It uses a heredoc (here-document) to write the Python code into greet.py
+
+| Part                         | Explanation                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| `cat`                        | The `cat` (concatenate) command. Here it's used to write input to a file. |
+| `> greet.py`                 | Redirects output to `greet.py`. The `>` operator **creates** the file if it doesn't exist, or **overwrites** it if it does. |
+| `<< 'EOF'`                   | Starts a **heredoc** (here-document). Everything until the closing `EOF` is fed as input to `cat`. |
+| `'EOF'` (with single quotes) | The delimiter. Single quotes tell Bash **not to expand** variables, commands, or special characters inside the heredoc. |
+| The content between          | The literal text that gets written to the file.              |
+| `EOF` (on its own line)      | The closing delimiter. Must be at the start of the line with no extra spaces (unless you use `<<-` for indentation). |
+
 
 ### Step 2 — Modify it and ask Git what changed
 
