@@ -19,62 +19,218 @@ Until now your work lived only on one machine — one spilled coffee away from o
 
 ## 🗺️ What to expect
 
-You'll publish your `engineering-journal` repo to GitHub, simulate a teammate's change using GitHub's web editor, pull that change down, and finally clone a fresh copy the way you would on day one at a new job. You'll authenticate once — that part has the most "it depends" of the day, so the lab covers both Codespaces (easiest) and local.
+You'll publish your `engineering-journal` repo to GitHub, simulate a teammate's change using GitHub's web editor, pull that change down, and finally clone a fresh copy the way you would on day one at a new job.
+
+**⚠️ Important note on Codespaces authentication:** If you started with a **Blank** Codespace (as instructed in Lab 1), you will likely hit a permission error on your first push. This is a very common gotcha caused by GitHub scoping the temporary token. The rest of this lab gives you two clear, explicit paths so you never have to guess which commands to run.
 
 ---
 
-## Setup & authentication
+## Part 1 — Publish your repo (choose one path)
 
-```bash
-cd ~/engineering-journal
-git status   # should be clean
-```
+You must pick **one** of the two paths below and follow its steps from start to finish.
 
-**Authentication, by environment:**
+Duplication in the instructions is intentional — it removes mental mapping and guesswork.
 
-- **Codespaces:** you're already signed in to GitHub — pushes just work, *if* the repo you push to is one you created. ✨ Nothing to do.
-- **Local machine:** the first time you push, Git will prompt you to sign in. On Windows/macOS, **Git Credential Manager** pops up a browser window — sign in and you're done forever. If you have the GitHub CLI, `gh auth login` also works. (GitHub removed password authentication in 2021; the browser flow handles tokens for you.)
+### Why we have two options
+
+| Aspect                  | Option A (Recommended)                                      | Option B (Stay & Workaround)                                   |
+|-------------------------|-------------------------------------------------------------|----------------------------------------------------------------|
+| **Environment**         | Switch to (or start) a new Codespace created from your repo | Stay in the exact same blank Codespace from Labs 1 and 2       |
+| **Authentication**      | "Just works" — GitHub gives the Codespace proper permissions | Requires creating a PAT + bypassing the credential helper      |
+| **What you learn**      | The normal real-world flow teams use every day              | A very common Codespaces gotcha + how to diagnose and fix it   |
+| **Future work**         | Smoother for the rest of the day and beyond                 | You may want to create a proper Codespace later                |
+| **Best for**            | Least friction today + good habits                          | Understanding auth issues deeply or not wanting to switch tabs |
+
+**Choose now**, then follow only the steps under your chosen option until you reach the ✅ checkpoint for publishing. After that, Part 2 and Part 3 are the same for everyone.
 
 ---
 
-## Part 1 — Follow along: publish your repo
+### Option A — Recommended: Create a Codespace from Your GitHub Repo
 
-### Step 1 — Create an empty repo on GitHub
+**Goal:** Use a Codespace that is correctly attached to your repository from the moment it is created. This is the experience you will have in real jobs.
+
+In this path:
+- You create the repo on GitHub (you can initialize it with a README).
+- You launch a **new** Codespace directly from that repo.
+- The remote is usually already set up correctly.
+- You bring your work across and push.
+
+**Step A1 — Create the repository on GitHub**
 
 1. In your browser: **github.com → + (top right) → New repository**.
 2. Name: `engineering-journal`.
-3. Visibility: **Public** (fine for today; Private also works).
-4. ⚠️ **Leave every checkbox unchecked** — no README, no .gitignore, no license. We need it *empty* because our local repo already has history; initializing on both ends creates two unrelated histories that conflict.
+3. Visibility: **Public** (Private is also fine).
+4. **For Option A you have flexibility here:**
+   - **Easiest start:** Check **"Add a README file"**. GitHub will give the repo an initial commit and a basic README. Your new Codespace will start with this already present.
+   - Leave the other boxes unchecked.
 5. Click **Create repository**.
 
-GitHub now shows a page of setup commands. We'll use the *"push an existing repository"* block — typed by hand, so you understand each line.
+**Step A2 — Launch a Codespace from this repo (the key step)**
 
-### Step 2 — Tell your local repo where the remote is
+1. On the repository page you just created, click the green **Code** button.
+2. Click the **Codespaces** tab.
+3. Click **Create codespace on main**.
+4. Wait ~30 seconds for the new Codespace to load in your browser.
 
-Replace `YOUR-USERNAME` with your GitHub username:
+This new Codespace has the correct GitHub token with write access to `engineering-journal`.
+
+**Step A3 — Open a terminal and inspect the connection**
+
+In the new Codespace:
 
 ```bash
-git remote add origin https://github.com/YOUR-USERNAME/engineering-journal.git
+# Codespaces often opens you inside the repo folder already
+pwd
+ls -a
 git remote -v
+git status
+git log --oneline
 ```
 
-- `remote add` registers a remote repository under a nickname
-- `origin` is that nickname — the universal convention for "the main remote." It's not magic, just a default name.
-- `git remote -v` verifies it (you'll see `fetch` and `push` URLs)
+You should see:
+- `origin` already points to your `engineering-journal` repo.
+- The repo may have the initial README commit from GitHub (if you chose that).
 
-### Step 3 — Push
+**Step A4 — Bring your existing work into this Codespace**
+
+Your Lab 1 + Lab 2 work is still in your previous Codespace (usually at `~/engineering-journal`).
+
+Easy ways to move it:
+
+**Using the file explorer (often simplest):**
+- In the old Codespace, select the files/folders you want (README.md, any .md files, greet.py, etc.).
+- Copy them.
+- In the new Codespace, paste them into the main folder (avoid overwriting the `.git` folder).
+
+**Or using the terminal (in the new Codespace):**
 
 ```bash
+# Copy content from your old location (adjust path if needed)
+cp -r ~/engineering-journal/* . 2>/dev/null || true
+cp -r ~/engineering-journal/.* . 2>/dev/null || true   # include dotfiles if any
+
+ls
+```
+
+**Step A5 — Commit and push**
+
+```bash
+git status
+git add .
+git commit -m "Add engineering journal content from Labs 1-2"
 git push -u origin main
 ```
 
-Breakdown: push the `main` branch to the remote nicknamed `origin`. The `-u` flag links your local `main` to the remote's `main`, so from now on plain `git push` and `git pull` know where to go. You only need `-u` on the *first* push of a branch.
+If you chose to initialize with a README on GitHub, this will add your commits on top.
 
-### Step 4 — Verify on GitHub
+**Step A6 — Verify on GitHub**
 
-Refresh the repo page in your browser. Your files are there, your README renders, and the commit count matches `git log --oneline | wc -l`. Click the commit count to see your full history — same hashes as your terminal.
+Refresh the repo page. Your files and commits should be visible.
 
-✅ **Checkpoint:** Your commits are visible on github.com.
+✅ **Checkpoint (Option A):** Your repository is published and you are working in a Codespace that has proper permissions for it.
+
+---
+
+### Option B — Stay in Your Current Codespace (PAT + Credential Bypass)
+
+**Goal:** Publish your existing local repository from the blank Codespace you have been using since Lab 1, while learning how to handle the common permission issue.
+
+In this path:
+- You create an **empty** repo on GitHub (no initial commit).
+- You stay in your current terminal.
+- You use a fine-grained Personal Access Token and tell Git to ignore the scoped Codespaces helper for the push.
+
+**Step B1 — Create an empty repository on GitHub**
+
+1. In your browser: **github.com → + (top right) → New repository**.
+2. Name: `engineering-journal`.
+3. Visibility: **Public** (Private also works).
+4. ⚠️ **Leave every checkbox unchecked** — no README, no .gitignore, no license.  
+   We need it *empty* because our local repo already has history.
+5. Click **Create repository**.
+
+GitHub now shows setup commands. We will do this by hand.
+
+**Step B2 — Create a fine-grained Personal Access Token**
+
+1. Go to GitHub → click your profile picture → **Settings** → **Developer settings** (left sidebar) → **Personal access tokens** → **Fine-grained tokens**.
+2. Click **Generate new token**.
+3. Token name: `codespaces-engineering-journal`
+4. **Resource owner**: Select your username.
+5. **Repository access**: Choose **Only select repositories** → select `engineering-journal`.
+6. **Permissions**:
+   - Under **Repository permissions**, find **Contents** → set to **Read and write**.
+7. Click **Generate token** and **copy the token immediately** (you will not see it again).
+
+**Step B3 — Tell your local repo where the remote is (using the PAT)**
+
+In your **current** Codespace terminal:
+
+```bash
+cd ~/engineering-journal
+git status   # should still be clean
+```
+
+Replace `YOUR-USERNAME` and `YOUR_PAT_HERE` with your actual values:
+
+```bash
+git remote remove origin 2>/dev/null || true
+
+git remote add origin https://YOUR-USERNAME:YOUR_PAT_HERE@github.com/YOUR-USERNAME/engineering-journal.git
+
+git remote -v
+```
+
+**Step B4 — Push using the bypass**
+
+```bash
+git -c credential.helper= push -u origin main
+```
+
+The `-c credential.helper=` tells Git "do not use any credential helper for this command" so it uses the username + PAT that is embedded in the URL.
+
+If it still complains, run the same command again.
+
+**Step B5 — Verify on GitHub**
+
+Refresh the repo page in your browser. Your files are there and the commit count should match what you have locally.
+
+```bash
+git log --oneline | head -5
+```
+
+✅ **Checkpoint (Option B):** Your commits are visible on github.com and you successfully worked around the blank Codespace token limitation.
+
+---
+
+## Continue here (both Option A and Option B)
+
+**Excellent!** Whether you followed the Option A path (new Codespace from the repo) or Option B path (PAT in your current Codespace), your `engineering-journal` repository is now published on GitHub.
+
+### Quick orientation — do this now
+
+Run these commands in the terminal of the environment where you just pushed:
+
+```bash
+pwd
+git status
+git remote -v
+git log --oneline -3
+```
+
+**Important for Option A students:**  
+Codespaces created from a repo often put you in `/workspaces/engineering-journal` (or similar), not `~/engineering-journal`. Use `cd` to go to the correct folder before the next commands.
+
+**Important for Option B students:**  
+You are still in your original `~/engineering-journal`.
+
+From this point on the instructions are the same for everyone.
+
+**From now on you should be able to use normal `git push` and `git pull`.** If a push ever fails with 403 again, use:
+
+```bash
+git -c credential.helper= push
+```
 
 ---
 
@@ -82,7 +238,7 @@ Refresh the repo page in your browser. Your files are there, your README renders
 
 Your repo now exists in **two places**, and they can drift apart. Let's make that happen deliberately.
 
-### Step 5 — Edit on GitHub (you're playing the teammate)
+### Step 1 — Edit on GitHub (you're playing the teammate)
 
 1. On your repo page, click `README.md` → pencil icon (✏️ **Edit this file**).
 2. Add a line at the bottom: `Day 1 (remote): edited directly on GitHub!`
@@ -90,14 +246,14 @@ Your repo now exists in **two places**, and they can drift apart. Let's make tha
 
 GitHub's web editor just made a commit that **your laptop knows nothing about**.
 
-### Step 6 — Prove your local copy is behind
+### Step 2 — Prove your local copy is behind
 
 ```bash
 git log --oneline    # the GitHub edit is NOT here
 cat README.md        # no new line
 ```
 
-### Step 7 — Pull
+### Step 3 — Pull
 
 ```bash
 git pull
@@ -115,7 +271,26 @@ cat README.md        # new line present
 
 `clone` is how you get a repo you *don't* already have — your first day on any team starts with it.
 
-### Step 8 — Clone a copy elsewhere
+### Working directory reminder (important)
+
+After publishing, use the same folder you were in when you completed your chosen option (Option A or B).
+
+```bash
+pwd
+git remote -v
+```
+
+Option A students: often `/workspaces/engineering-journal` or similar.  
+Option B students: usually `~/engineering-journal`.
+
+```bash
+cd /path/to/your/engineering-journal
+git remote -v
+```
+
+### Step 4 — Clone a copy elsewhere
+
+From your home directory (or any convenient location):
 
 ```bash
 cd ~
@@ -124,6 +299,8 @@ cd journal-clone
 git log --oneline
 git remote -v
 ```
+
+(If you prefer SSH and have it set up: `git clone git@github.com:YOUR-USERNAME/engineering-journal.git journal-clone`)
 
 Notice what `clone` did automatically: downloaded the **entire history** (not just latest files), set up the `origin` remote, and checked out `main`. That's why cloning is one command while init-and-connect was three — clone *is* init + remote add + pull, bundled.
 
@@ -139,13 +316,21 @@ You now have **two local copies** of the same remote repo — a perfect simulati
 2. Switch to the original `engineering-journal` folder and get that commit onto it *without* using the browser.
 3. From `engineering-journal`, append a line to `clone-note.md`, commit, push.
 4. Update `journal-clone` so both copies match. Verify with `git log --oneline` in both.
+
+**If any push in the challenge fails with a 403**, use the bypass:
+
+```bash
+git -c credential.helper= push
+```
+
+(After the very first successful push of the repo, this is rarely needed again. Option A students almost never need it.)
 5. **Bonus 1:** In either copy, run `git fetch` followed by `git status` after the *other* copy has pushed something new. What does `git status` say that it never said before? What does this tell you about the difference between `fetch` and `pull`?
 6. **Bonus 2:** What happens if you `git push` when the remote has commits you don't have yet? Engineer the situation and read the error message — it's one of the most common errors in daily Git life, and you'll meet it again.
 
 <details>
 <summary>💡 Hint 1 — pushing from the clone</summary>
 
-Clone set up tracking automatically, so plain `git push` works — no `-u` needed. (`-u` is only needed when *you* created the link by hand, like in Part 1.)
+Clone set up tracking automatically, so plain `git push` works — no `-u` needed. (`-u` is only needed when *you* created the link by hand with `git remote add` — common for students who followed Option B. Many Option A students never had to do this step.)
 </details>
 
 <details>
@@ -163,6 +348,8 @@ Push a commit from copy A. Then in copy B (now behind), make a *different* commi
 ---
 
 ## 🧾 What you learned
+
+**Note:** Depending on the path you chose, you may have seen `git remote -v` already populated by Codespaces (Option A) instead of typing `git remote add` yourself. The concepts below are the same.
 
 | Command | What it does |
 |---|---|

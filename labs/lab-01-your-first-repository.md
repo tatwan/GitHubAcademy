@@ -33,6 +33,8 @@ This lab is **entirely local** — nothing touches GitHub yet. You'll create a t
 
 > A Codespace is a complete Linux dev machine running in your browser. Git is pre-installed. Free accounts include 120 core-hours/month — plenty for today.
 
+**Note for later (Labs 3 and 4):** Codespaces created from the Blank template have a limited GitHub token that is scoped only to the blank template. When you create your own repository on GitHub and try to push to it, you will likely see a 403 permission error. Lab 3 contains clear fixes (the easiest is to create a fresh Codespace directly from your new repository using the "Code → Codespaces" button). This is a very common student experience — the lab walks you through it.
+
 ### Option B — Local machine
 
 Open your terminal (macOS Terminal, Windows **Git Bash**, or WSL) and verify Git is installed:

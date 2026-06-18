@@ -5,6 +5,9 @@ Live demos run between the slide segment and the lab for each module. Each demo 
 **Setup before the day:**
 
 - A clean Codespace (blank template) with terminal font size cranked up (`Cmd/Ctrl +` several times — aim for ~20pt on a Zoom share).
+- **You will almost certainly hit the Codespaces 403 permission issue during Demo 3** because you are also using a blank template. Be ready with the two fixes:
+  - Preferred: Create a fresh Codespace from the demo repo you just created (Code → Codespaces → Create codespace on main).
+  - Or use the fine-grained PAT + `git -c credential.helper= push` bypass (documented in detail in lab-03). Narrate it live — "this is the exact gotcha students will see in 10 minutes."
 - A throwaway GitHub account or a dedicated demo account, logged in, so you can show repo creation without exposing your real notifications.
 - Pre-create nothing — typing from scratch *is* the demo. Keep this file open on a second monitor.
 - Prompt tip: a long shell prompt eats space. `export PS1='\W $ '` makes it minimal.
@@ -154,7 +157,17 @@ cd demo-clone && git log --oneline  # 💬 "Entire history, remote pre-wired. Da
 
 **💬 ASK:** "When would you `init` and when would you `clone`?" *(init = project born on your machine; clone = project already exists somewhere.)*
 
-**If authentication hiccups live:** stay calm, narrate it — "this is the #1 first-day friction in real jobs too" — and show the browser-popup flow. In Codespaces it just works; say so.
+**If authentication hiccups live:** stay calm, narrate it — "this is the #1 first-day friction in real jobs too".
+
+**In Codespaces created from Blank:** it does **not** "just work". You will hit the 403 "Permission denied to yourself".
+
+During the demo (and when guiding the lab):
+- Clearly present the two paths in the lab (Option A vs Option B).
+- Walk through **one complete path** live (recommended: show Option A — create repo, immediately create Codespace from it, copy content or add files, push).
+- Mention Option B exists for people who want to stay in the current window.
+- Tell the room: "Pick one path in the lab and follow its numbered steps. Do not mix them."
+
+After a successful push in the demo, say: "From this moment normal `git push` and `git pull` should work for everyone."
 
 **Troubleshooting notes:**
 
@@ -162,6 +175,10 @@ cd demo-clone && git log --oneline  # 💬 "Entire history, remote pre-wired. Da
 - If push says `src refspec main does not match any`, check whether the branch is named `master` or whether there are no commits yet.
 - If the GitHub repo was created with a README, the easiest classroom fix is to delete and recreate it empty.
 - If using a local terminal and authentication loops, switch that learner to Codespaces if time is tight.
+- **Codespaces 403 "Permission denied to YOUR-USERNAME" on `git push`**: Blank template token scoping. 
+  - Guide students to pick **one** path from the lab (Option A = new Codespace from the repo, or Option B = PAT + bypass in current Codespace).
+  - Do not mix commands from both paths.
+  - See the restructured Part 1 in lab-03-local-meets-remote.md for the exact split instructions.
 
 ---
 

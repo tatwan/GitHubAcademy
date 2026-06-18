@@ -26,13 +26,18 @@ You'll grow your `engineering-journal` with a feature branch, watch files appear
 ## Setup
 
 ```bash
-cd ~/engineering-journal
+pwd                     # confirm you are in the right folder
+cd ~/engineering-journal   # or the folder from your chosen Lab 3 path (Option A vs B)
 git status        # clean working tree
 git pull          # always start in sync
 git branch        # shows: * main
 ```
 
 > 💡 We use `git switch` (introduced 2019) rather than the older `git checkout`. Both work — `checkout` does many unrelated things, while `switch` does exactly one. You'll see `checkout` in older tutorials; mentally translate it.
+
+**Directory reminder:** Students who used Option A in Lab 3 may be in a different folder (e.g. `/workspaces/engineering-journal`). Always run `pwd` first.
+
+**If `git pull` or later `git push` fails with a permission error**, see the Codespaces authentication fixes in Lab 3 (use `git -c credential.helper= push` if needed).
 
 ---
 
@@ -134,6 +139,8 @@ git push
 
 ✅ **Checkpoint:** `git branch` shows only `main`, and `standup.md` is on GitHub after the push.
 
+**If push is rejected with permission error:** use `git -c credential.helper= push` (see Lab 3).
+
 ---
 
 ## Part 3 — Follow along: meet a merge conflict (gently)
@@ -204,6 +211,8 @@ git push
 ```
 
 ✅ **Checkpoint:** `git log --oneline --graph` shows a merge commit joining two lines of history.
+
+**If the final push fails with 403:** `git -c credential.helper= push` (Lab 3 troubleshooting). After today you can create future Codespaces from the repo itself so this never happens again.
 
 > 🧘 That's the whole conflict workflow: **open the file → pick what's right → remove markers → add → commit.** We'll go deeper in a future session; today you just needed to see that it's survivable.
 
