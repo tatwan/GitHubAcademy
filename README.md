@@ -1,4 +1,4 @@
-# Expeditors — Engineering Kickoff Day
+# Expeditors — Engineering Kickoff Day!
 
 ## Git & GitHub Fundamentals
 
